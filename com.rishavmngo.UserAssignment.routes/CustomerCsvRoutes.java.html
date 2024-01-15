@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerCsvRoutes.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserAssignment</a> &gt; <a href="index.source.html" class="el_package">com.rishavmngo.UserAssignment.routes</a> &gt; <span class="el_source">CustomerCsvRoutes.java</span></div><h1>CustomerCsvRoutes.java</h1><pre class="source lang-java linenums">package com.rishavmngo.UserAssignment.routes;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
+import org.apache.camel.spi.DataFormat;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.rishavmngo.UserAssignment.domain.CustomerEntity;
+import com.rishavmngo.UserAssignment.service.CustomerService;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Component
+<span class="fc" id="L21">public class CustomerCsvRoutes extends RouteBuilder {</span>
+
+	@Autowired
+	private CustomerService customerService;
+
+	@Override
+	public void configure() throws Exception {
+<span class="fc" id="L28">		DataFormat bind = new BindyCsvDataFormat(CustomerEntity.class);</span>
+
+		// from(&quot;file:data/inbox?move=.done&amp;moveFailed=.failed&quot;)
+		// .setHeader(&quot;CamelFileName&quot;, simple(&quot;${file:name.noext}&quot;))
+		// .unmarshal(bind)
+		// .process(exchange -&gt; {
+		// // Access the unmarshalled data
+		// List&lt;CustomerEntity&gt; customers = exchange.getIn().getBody(List.class);
+		//
+		// // Set the filename for each customer
+		// String filename = exchange.getIn().getHeader(&quot;CamelFileName&quot;, String.class);
+		// for (CustomerEntity customer : customers) {
+		// customer.setFileName(filename);
+		// }
+		//
+		// // Replace the body with the modified data
+		// exchange.getIn().setBody(customers);
+		// })
+		// .bean(customerService, &quot;SaveAll&quot;)
+		// .end();
+
+		// from(&quot;file:data/inbox?move=.done&amp;moveFailed=.failed&quot;)
+		// .setHeader(&quot;CamelFileName&quot;, simple(&quot;${file:name.noext}&quot;))
+		// .unmarshal(bind)
+		// .process(exchange -&gt; {
+		// // Access the unmarshalled data
+		// List&lt;CustomerEntity&gt; customers = exchange.getIn().getBody(List.class);
+		//
+		// // Set the filename for each customer
+		// String filename = exchange.getIn().getHeader(&quot;CamelFileName&quot;, String.class);
+		// for (CustomerEntity customer : customers) {
+		// customer.setFileName(filename);
+		// }
+		//
+		// // Replace the body with the modified data
+		// exchange.getIn().setBody(customers);
+		// })
+		// .bean(customerService, &quot;SaveAll&quot;)
+		// .end();
+
+		// onException(BadRequestException.class)
+		// .process(exhange -&gt; {
+		// System.out.println(&quot;&quot; +
+		// exhange.getIn().getBody(CustomerEntity.class).toString());
+		// })
+		// .handled(true)
+		// .end();
+
+		// from(&quot;file:data/inbox?move=.done&amp;moveFailed=.failed&quot;)
+		// .setHeader(&quot;CamelFileName&quot;, simple(&quot;${file:name.noext}&quot;))
+		// .unmarshal(bind)
+		// .split(body()) // Split the list of customers
+		// .process(exchange -&gt; {
+		// CustomerEntity customer = exchange.getIn().getBody(CustomerEntity.class);
+		// String filename = exchange.getIn().getHeader(&quot;CamelFileName&quot;, String.class);
+		// customer.setFileName(filename);
+		// exchange.getIn().setBody(customer);
+		// })
+		// .bean(customerService, &quot;addCustomer&quot;)
+		// .end();
+
+		// onException(IllegalArgumentException.class).handled(true).log(&quot;Not a csv
+		// file&quot;);
+
+		// from(&quot;file:data/inbox?move=.done&amp;moveFailed=.failed&quot;)
+		// .routeId(&quot;csv-input&quot;)
+		// .setHeader(&quot;CamelFileName&quot;, simple(&quot;${file:name.noext}&quot;))
+		// .unmarshal(bind)
+		// .split(body()) // Split the list of customers
+		// .to(&quot;direct:csvFileProcessor&quot;);
+		//
+		// from(&quot;direct:csvFileProcessor&quot;)
+		// .process(exchange -&gt; {
+		// CustomerEntity customer = exchange.getIn().getBody(CustomerEntity.class);
+		// String filename = exchange.getIn().getHeader(&quot;CamelFileName&quot;, String.class);
+		// customer.setFileName(filename);
+		// try {
+		// customerService.addCustomer(customer);
+		// System.out.println(&quot;Customer with email &quot; + customer.getEmail() + &quot; added
+		// successfully&quot;);
+		//
+		// } catch (Exception e) {
+		//
+		// System.out.println(&quot;Customer with email &quot; + customer.getEmail() + &quot; added
+		// unsucessfully&quot;);
+		//
+		// throw e;
+		// }
+		// })
+		// .end();
+
+		// onException(IllegalArgumentException.class)
+		// .handled(true)
+		// .log(&quot;Invalid csv file&quot;);
+
+		// onException(BadRequestException.class)
+		// .handled(true)
+		// .to(&quot;file:data/inbox/.new&quot;);
+
+<span class="fc" id="L127">		SharedState state = new SharedState();</span>
+		// from(&quot;file:data/inbox?move=.done&amp;moveFailed=.failed&quot;)
+		// .log(&quot;deteced a file&quot;)
+		// .routeId(&quot;csv-input&quot;)
+		// .setHeader(&quot;CamelFileName&quot;, simple(&quot;${file:name.noext}&quot;))
+		// .doTry()
+		// .unmarshal(bind)
+		// .to(&quot;direct:csvFileProcessor&quot;)
+		// .endDoTry()
+		// .doCatch(IllegalArgumentException.class)
+		// .log(&quot;Failed to parse csv file, invalid csv file given&quot;)
+		// .throwException(new IllegalArgumentException(&quot;Not a csv file&quot;));
+		//
+		// from(&quot;direct:csvFileProcessor&quot;)
+		// .process(e -&gt; state.reset())
+		// .split(body())
+		// .process(exchange -&gt; {
+		// CustomerEntity customer = exchange.getIn().getBody(CustomerEntity.class);
+		// String filename = exchange.getIn().getHeader(&quot;CamelFileName&quot;, String.class);
+		// customer.setFileName(filename);
+		// try {
+		// customerService.addCustomer(customer);
+		// state.incrementSuccssFul();
+		// // System.out.println(&quot;Customer with email &quot; + customer.getEmail() + &quot; added
+		// // successfully&quot;);
+		//
+		// } catch (Exception e) {
+		//
+		// state.incrementUnSuccssFul();
+		// state.setErrorFlag(true);
+		// // System.out.println(&quot;Customer with email &quot; + customer.getEmail() + &quot;
+		// // addedunsucessfully&quot;);
+		// }
+		// }).end()
+		// .process(exchange -&gt; {
+		//
+		// if (state.isErrorFlag()) {
+		// throw new BadRequestException(&quot;Failed to add &quot; + state.getUnSuccessFul() + &quot;
+		// customers&quot;);
+		// }
+		//
+		// System.out.println(state.getSuccessFul() + &quot; customers added successfully&quot;);
+		//
+		// });
+
+<span class="fc" id="L172">		from(&quot;file:data/inbox?noop=true&quot;)</span>
+<span class="fc" id="L173">				.log(&quot;deteced a file&quot;)</span>
+<span class="fc" id="L174">				.routeId(&quot;csv-input&quot;)</span>
+<span class="fc" id="L175">				.process(e -&gt; state.reset())</span>
+<span class="fc" id="L176">				.doTry()</span>
+<span class="fc" id="L177">				.unmarshal(bind)</span>
+<span class="fc" id="L178">				.to(&quot;direct:csvFileProcessor&quot;)</span>
+<span class="fc" id="L179">				.endDoTry()</span>
+<span class="fc" id="L180">				.doCatch(IllegalArgumentException.class)</span>
+<span class="fc" id="L181">				.log(&quot;Failed to parse csv file, invalid csv file given&quot;)</span>
+<span class="fc" id="L182">				.process(e -&gt; state.setErrorFlag(true))</span>
+<span class="fc" id="L183">				.to(&quot;direct:moveFile&quot;);</span>
+
+<span class="fc" id="L185">		from(&quot;direct:csvFileProcessor&quot;)</span>
+<span class="fc" id="L186">				.split(body())</span>
+<span class="fc" id="L187">				.process(exchange -&gt; {</span>
+<span class="fc" id="L188">					CustomerEntity customer = exchange.getIn().getBody(CustomerEntity.class);</span>
+<span class="fc" id="L189">					String filename = exchange.getIn().getHeader(&quot;CamelFileName&quot;, String.class);</span>
+<span class="fc" id="L190">					customer.setFileName(filename);</span>
+					try {
+<span class="fc" id="L192">						customerService.addCustomer(customer);</span>
+<span class="fc" id="L193">						state.incrementSuccssFul();</span>
+						// System.out.println(&quot;Customer with email &quot; + customer.getEmail() + &quot; added
+						// successfully&quot;);
+
+<span class="fc" id="L197">					} catch (Exception e) {</span>
+
+<span class="fc" id="L199">						state.incrementUnSuccssFul();</span>
+<span class="fc" id="L200">						state.setErrorFlag(true);</span>
+						// System.out.println(&quot;Customer with email &quot; + customer.getEmail() + &quot;
+						// addedunsucessfully&quot;);
+<span class="fc" id="L203">					}</span>
+<span class="fc" id="L204">				})</span>
+<span class="fc" id="L205">				.end()</span>
+<span class="fc" id="L206">				.to(&quot;direct:moveFile&quot;);</span>
+
+<span class="fc" id="L208">		from(&quot;direct:moveFile&quot;)</span>
+<span class="fc" id="L209">				.process(e -&gt; {</span>
+
+<span class="fc" id="L211">					String filename = e.getIn().getHeader(&quot;CamelFileName&quot;, String.class);</span>
+<span class="fc" id="L212">					Path sourcePath = Paths</span>
+<span class="fc" id="L213">							.get(&quot;data/inbox/&quot; + filename);</span>
+					Path destinationPath = Paths
+<span class="fc bfc" id="L215" title="All 2 branches covered.">							.get(&quot;data/inbox/&quot; + (state.isErrorFlag() ? &quot;.failed/&quot; : &quot;.done/&quot;) + filename);</span>
+
+<span class="fc" id="L217">					Files.move(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);</span>
+<span class="fc" id="L218">					System.out.println(&quot;file moved to &quot; + destinationPath.toString());</span>
+<span class="fc" id="L219">					System.out.println(&quot;Successfully added customers: &quot; + state.getSuccessFul());</span>
+<span class="fc" id="L220">					System.out.println(&quot;Failed to added customers: &quot; + state.getUnSuccessFul());</span>
+<span class="fc" id="L221">				}</span>
+
+				);
+		// .process(exchange -&gt; {
+		// CustomerEntity customer = exchange.getIn().getBody(CustomerEntity.class);
+		// String filename = exchange.getIn().getHeader(&quot;CamelFileName&quot;, String.class);
+		// customer.setFileName(filename);
+		// exchange.getIn().setHeader(&quot;UserEmail&quot;, customer.getEmail());
+		// }).doTry()
+		// .bean(customerService, &quot;addCustomer&quot;)
+		// .log(&quot;Email added successfully: ${header.UserEmail}&quot;)
+		// .process(exchange -&gt; {
+		// String filename = exchange.getIn().getHeader(&quot;CamelFileName&quot;, String.class);
+		// Path sourcePath = Paths.get(&quot;data/inbox/&quot; + filename + &quot;.csv&quot;);
+		// Path destinationPath = Paths.get(&quot;data/inbox/.done/&quot; + filename + &quot;.csv&quot;);
+		//
+		// if (Files.exists(sourcePath)) {
+		//
+		// try {
+		// Files.move(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// })
+		// .endDoTry()
+		// .doCatch(BadRequestException.class)
+		// .log(&quot;Error occured Email taken: ${header.UserEmail}&quot;)
+		// .process(exchange -&gt; {
+		// String filename = exchange.getIn().getHeader(&quot;CamelFileName&quot;, String.class);
+		// Path sourcePath = Paths.get(&quot;data/inbox/&quot; + filename + &quot;.csv&quot;);
+		// Path destinationPath = Paths.get(&quot;data/inbox/.failed/&quot; + filename + &quot;.csv&quot;);
+		// // System.out.println(&quot;hello &quot; + sourcePath.toString());
+		// // System.out.println(Files.exists(sourcePath));
+		//
+		// if (Files.exists(sourcePath)) {
+		//
+		// try {
+		// Files.move(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// });
+<span class="fc" id="L267">	}</span>
+
+}
+
+@Getter
+@Setter
+<span class="fc" id="L273">class SharedState {</span>
+	private boolean errorFlag;
+	private boolean csvParsingErrorFlag;
+<span class="fc" id="L276">	private int successFul = 0;</span>
+<span class="fc" id="L277">	private int unSuccessFul = 0;</span>
+
+	public void reset() {
+<span class="fc" id="L280">		setErrorFlag(false);</span>
+<span class="fc" id="L281">		setSuccessFul(0);</span>
+<span class="fc" id="L282">		setUnSuccessFul(0);</span>
+<span class="fc" id="L283">		setCsvParsingErrorFlag(false);</span>
+<span class="fc" id="L284">	}</span>
+
+	public void incrementSuccssFul() {
+<span class="fc" id="L287">		setSuccessFul(getSuccessFul() + 1);</span>
+<span class="fc" id="L288">	}</span>
+
+	public void incrementUnSuccssFul() {
+<span class="fc" id="L291">		setUnSuccessFul(getUnSuccessFul() + 1);</span>
+<span class="fc" id="L292">	}</span>
+
+}
+
+// .process(exchange -&gt; {
+// String filename = exchange.getIn().getHeader(&quot;CamelFileName&quot;, String.class);
+// Path sourcePath = Paths.get(&quot;data/inbox/&quot; + filename + &quot;.csv&quot;);
+// Path destinationPath = Paths.get(&quot;data/inbox/.failed/&quot; + filename + &quot;.csv&quot;);
+// // System.out.println(&quot;hello &quot; + sourcePath.toString());
+// // System.out.println(Files.exists(sourcePath));
+//
+// if (Files.exists(sourcePath)) {
+//
+// try {
+// Files.move(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+// } catch (IOException e) {
+// e.printStackTrace();
+// }
+// }
+//
+// });
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
